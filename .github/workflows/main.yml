@@ -21,35 +21,3 @@ jobs:
         run: ls-lah
 
       
-  # build:
-  #   needs: <job_requis>
-  #   name: <nom_du_job>
-  #   runs-on: ubuntu-latest
-  #   steps: 
-    
-  #     - name: checkout
-  #       uses: actions/checkout@v4
-
-  #     - name: node .env
-  #       uses: actions/setup-node@v4
-  #       with:
-  #         node-version: 20
-      
-  #     - name : connexion a GHCR
-  #       uses: docker/login-action@v2
-  #       with:
-  #         registry: ghcr.io
-  #         username: ${{ github.actor }}
-  #         password: ${{ secrets.CICDTOKEN }}
-
-  #     - name: connexion SSH
-  #       uses: appleboy/ssh-action@v1.0.3
-  #       with:
-  #         host: ${{ secrets.HOST }}
-  #         username: ${{ secrets.USER }}
-  #         key: ${{ secrets.KEY }}
-  #         script: |
-  #           docker stop app
-  #           docker rm app
-  #           docker rmi ${{env.IMAGE_NAME}}:latest
-  #           docker run -d --name app -p 8080:8080 ${{env.IMAGE_NAME}}:latest
