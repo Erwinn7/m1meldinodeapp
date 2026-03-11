@@ -83,6 +83,6 @@ jobs:
           key: ${{ secrets.KEY }}
           script: |
            echo ${{secrets.TOKEN_CICD}} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-           docker pull ${{ env.REPO }}/${{ github.actor }}/${{ env.IMAGE_NAME }}:latest
-           docker run -d -p 3000:3000 --name ${{ env.IMAGE_NAME }} ${{ env.REPO }}/${{ github.actor }}/${{ env.IMAGE_NAME }}:latest
+           sudo docker pull ${{ env.REPO }}/${{ github.actor }}/${{ env.IMAGE_NAME }}:latest
+           sudo docker run -d -p 3000:3000 --name ${{ env.IMAGE_NAME }} ${{ env.REPO }}/${{ github.actor }}/${{ env.IMAGE_NAME }}:latest
            curl -X GET http://localhost:3000
