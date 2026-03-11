@@ -7,6 +7,8 @@ on:
 
 env:
   IMAGE_NAME: meldiapp
+  REPO: ghrc.io
+
 
 jobs:
   test:
@@ -22,7 +24,7 @@ jobs:
     
   build:
     needs: test
-    name: build 
+    name: build and push 
     runs-on: ubuntu-latest
     steps: 
     
@@ -35,5 +37,21 @@ jobs:
       - name: run l'image docker
         run: docker run -d -p 3000:3000 ${{env.IMAGE_NAME}}
 
-      - name: tester le conteneur docker
-        run: "ls"
+      - name: tager en version courante l'image docker
+        run: "docker tag ${{ env.IMAGE_NAME }}:1.0 ${{ env.REPO }}/${{ github.actor }}/${{ env.IMAGE_NAME }}:1.0 "
+
+      - name: tager en version latest l'image docker
+        run: "docker tag ${{ env.IMAGE_NAME }}:1.0 ${{ env.REPO }}/${{ github.actor }}/${{ env.IMAGE_NAME }}:latest "        
+
+      - name : connexion a GHCR
+        uses: docker/login-action@v2
+        with:
+          registry: ${{ env.REPO }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.TOKEN_CICD }}
+      
+      - name: push de l'image version courante sur GHCR
+        run: "docker push ${{ env.REPO }}/${{ github.actor }}/${{ env.IMAGE_NAME }}:1.0 "
+
+      - name: push de l'image version latest sur GHCR
+        run: "docker push ${{ env.REPO }}/${{ github.actor }}/${{ env.IMAGE_NAME }}:latest "
